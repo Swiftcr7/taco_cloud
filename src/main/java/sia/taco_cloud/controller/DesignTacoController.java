@@ -7,10 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import sia.taco_cloud.Ingredient;
+import sia.taco_cloud.model.Ingredient;
 import sia.taco_cloud.repository.IngredientRepository;
-import sia.taco_cloud.Taco;
-import sia.taco_cloud.TacoOrder;
+import sia.taco_cloud.model.Taco;
+import sia.taco_cloud.model.TacoOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +23,16 @@ import java.util.stream.Collectors;
 public class DesignTacoController {
     @Autowired
     private IngredientRepository ingredientRepository;
+
     @GetMapping
-    public String tacoGet(){
+    public String tacoGet() {
         return "design";
     }
 
     @PostMapping
-    public String tacoPost(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder){
-        log.info("ck,ckfckf");
+    public String tacoPost(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder) {
         tacoOrder.addTaco(taco);
-        log.info("{}", taco);
-        if (errors.hasErrors()){
-            log.info("chpo");
+        if (errors.hasErrors()) {
             return "design";
         }
         log.info("Processing taco {}", taco);
@@ -42,24 +40,22 @@ public class DesignTacoController {
     }
 
     @ModelAttribute(name = "taco")
-    public Taco taco(){
+    public Taco taco() {
         return new Taco();
     }
 
     @ModelAttribute(name = "tacoOrder")
-    public TacoOrder tacoOrder(){
+    public TacoOrder tacoOrder() {
         return new TacoOrder();
     }
 
     @ModelAttribute
-    public void addIngredient(Model model){
+    public void addIngredient(Model model) {
         List<Ingredient> ingredients = new ArrayList<>();
-        log.info("chpo");
-
         ingredientRepository.findAll().forEach(ingredients::add);
         log.info(String.valueOf(ingredients));
         Ingredient.Type[] types = Ingredient.Type.values();
-        for (var type : types){
+        for (var type : types) {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
         }
 

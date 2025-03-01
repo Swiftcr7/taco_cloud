@@ -1,9 +1,10 @@
-package sia.taco_cloud;
+package sia.taco_cloud.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import sia.taco_cloud.model.Ingredient;
 import sia.taco_cloud.repository.IngredientRepository;
 
 @Slf4j
